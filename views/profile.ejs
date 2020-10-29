@@ -1,0 +1,141 @@
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+      <style>
+          #prod_data
+          {
+              display: grid;
+              grid-template-columns: auto auto auto;
+              padding: 10px;
+          }
+          .prod{
+              border: 1px solid rgba(0, 0, 0, 0.8);
+              font-size: 10px;
+              text-align: center;
+          }
+          #collapse
+          {
+              visibility: unset;
+          }
+      </style>
+      
+  </head>
+  <body>
+  <script>
+      let cnt=0;
+      let val = <%- data %>;
+      let interval;
+        let html="";
+      function updateProd(){
+                html="                <div class=\"prod\">\n"  +
+                    "                <img  width=\"300\" height=\"200\" src=\"http://localhost:8080/images/upload_images/"+val[cnt].image+"\"><br>\n" +
+                    "                <label>Title :" +val[cnt].title+"</label><br>\n" +
+                    "                <label>Description:"+val[cnt].desc+"</label><br>\n" +
+                    "              </div>\n" +
+                    "\n" +
+                    "              <div class=\"prod\">\n" +
+                    "                <img  width=\"300\" height=\"200\" src=\"http://localhost:8080/images/upload_images/"+val[cnt+1].image+"\" ><br>\n" +
+                    "                  <label>Title :  "+val[cnt+1].title+" </label><br>\n" +
+                    "                  <label>Description: "+val[cnt+1].desc+"</label><br>\n" +
+                    "                </div>\n" +
+                    "\n" +
+                    "              <div class=\"prod\">\n" +
+                    "                <img width=\"300\" height=\"200\" src=\"http://localhost:8080/images/upload_images/"+val[cnt+2].image+"\" ><br>\n" +
+                    "                <label>Title :  "+val[cnt+2].title+" </label><br>\n" +
+                    "                <label>Description: "+val[cnt+2].desc+" </label><br>\n" +
+                    "              </div>\n" +
+                    "\n" +
+                    "                <div class=\"prod\">\n" +
+                    "                  <img  width=\"300\" height=\"200\" src=\"http://localhost:8080/images/upload_images/"+val[cnt+3].image+"\" ><br>\n" +
+                    "                  <label>Title :  "+val[cnt+3].title+"</label><br>\n" +
+                    "                  <label>Description: "+val[cnt+3].desc+" </label><br>\n" +
+                    "                </div>\n" +
+                    "\n" +
+                    "                <div class=\"prod\">\n" +
+                    "                  <img  width=\"300\" height=\"200\" src=\"http://localhost:8080/images/upload_images/"+val[cnt+4].image+"\" ><br>\n" +
+                    "                  <label>Title : "+val[cnt+4].title+" </label><br>\n" +
+                    "                  <label>Description: "+val[cnt+4].desc+"</label><br>\n" +
+                    "                </div>\n" +
+                    "\n" +
+                    "                <div class=\"prod\">\n" +
+                    "                  <img  width=\"300\" height=\"200\" src=\"http://localhost:8080/images/upload_images/"+val[cnt+5].image+"\" ><br>\n" +
+                    "                  <label>Title :  "+val[cnt+5].title+" </label><br>\n" +
+                    "                  <label>Description:"+val[cnt+5].desc+" </label><br>\n" +
+                    "                </div>\n";
+
+          document.getElementById("prod_data").innerHTML=html;
+
+        cnt=cnt+6;
+      }
+
+          try {
+              updateProd();
+          } catch (e) {
+              console.log(e.message)
+          }
+
+      interval= setInterval(()=>{
+                  try {
+                      updateProd();
+                  }
+                  catch (e) {
+
+                      document.getElementById("prod_data").innerHTML="";
+                      let total=<%= size %>;
+                      for(let i=0;cnt<total;i++)
+                      {
+                          document.getElementById("prod_data").insertAdjacentHTML('beforeend',"                <div class=\"prod\">\n"  +
+                              "                <img  width=\"300\" height=\"200\" src=\"http://localhost:8080/images/upload_images/"+val[cnt].image+"\"><br>\n" +
+                              "                <label>Title :" +val[cnt].title+"</label><br>\n" +
+                              "                <label>Description:"+val[cnt].desc+"</label><br>\n" +
+                              "              </div>\n");
+                          cnt++;
+                      }
+                      clearInterval(interval);
+                  }
+              }, 3000);
+
+
+
+  </script>
+
+  <button class="new-register" onclick="window.location.href='http://localhost:8080/register';">Register New Entry</button><br>
+
+  <div class="row"  id="prod_data" ></div><br>
+
+  <button id="total" >Queue <%= size %></button>
+
+  <button id="collapse" >Collapse </button>
+
+  <script>
+
+      document.getElementById("total").addEventListener('click',(e)=>{
+
+          let count=0;
+            e.preventDefault();
+            if(interval)
+            {clearInterval(interval);}
+          document.getElementById('total').style.visibility="hidden";
+          document.getElementById("prod_data").innerHTML="";
+
+            let total=<%= size %>;
+            for(let i=0;count<total;i++)
+            {
+                document.getElementById("prod_data").insertAdjacentHTML('beforeend',"                <div class=\"prod\">\n"  +
+                    "                <img  width=\"300\" height=\"200\" src=\"http://localhost:8080/images/upload_images/"+val[count].image+"\"><br>\n" +
+                    "                <label>Title :" +val[count].title+"</label><br>\n" +
+                    "                <label>Description:"+val[count].desc+"</label><br>\n" +
+                     "              </div>\n");
+                count++;
+            }
+
+      });
+
+      document.getElementById('collapse').addEventListener('click',(e)=>
+      {
+          document.getElementById("prod_data").innerHTML="";
+      });
+  </script>
+  </body>
+</html>
